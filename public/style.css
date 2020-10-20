@@ -1,0 +1,18 @@
+* {
+  background-color: aquamarine;
+}
+
+body {
+  padding: 50px;
+  font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
+  background-color: aquamarine;
+}
+
+.h111 {
+  color: red;
+  background-color: aquamarine;
+}
+
+a {
+  color: #00b7ff;
+}
