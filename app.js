@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const path = require('path');
 const app = express();
 
-const { db } = require('./models');
+const { db, Page, User } = require('./models');
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -18,7 +18,11 @@ app.get('/', (req, res) => {
 // Verify db connection
 db.authenticate().then(() => { console.log('connected to the database') });
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}!`)
-})
+const init = async () => {
+  await db.sync(); // db.sync({force: true}) - to drop and recreate tables data
+  app.listen(3000, () => {
+    console.log(`Server is listening on port 3000!`);
+  });
+}
+
+init();
