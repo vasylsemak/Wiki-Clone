@@ -12,10 +12,18 @@ const Page = db.define('page', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  content: Sequelize.TEXT,
+  content: {
+    type: Sequelize.TEXT,
+    allowNull: false
+  },
   status: {
     type: Sequelize.STRING,
-    isIn: [['open', 'closed']]
+    validate: {
+      isIn: {
+        args: [['open', 'closed']],
+        msg: 'Must be open or closed!'
+      }
+    }
   }
 })
 
@@ -26,8 +34,8 @@ const User = db.define('user', {
   },
   email: {
     type: Sequelize.STRING,
+    allowNull: false,
     validate: {
-      allowNull: false,
       isEmail: true,
       unique: true
     }
