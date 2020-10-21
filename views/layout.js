@@ -21,7 +21,7 @@ module.exports = (content) => html`<!DOCTYPE html>
           </div>
           <div id="nav-items" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-              <li><a href="/wiki/">index</a></li>
+              <li><a href="/wiki/">pages</a></li>
               <li><a href="/wiki/add">write</a></li>
               <li><a href="/users">users</a></li>
             </ul>
