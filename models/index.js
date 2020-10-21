@@ -25,7 +25,7 @@ const Page = db.define('page', {
       }
     }
   }
-})
+});
 
 const User = db.define('user', {
   name: {
@@ -40,6 +40,10 @@ const User = db.define('user', {
       unique: true
     }
   }
+});
+
+Page.beforeValidate(page => {
+  page.slug = page.title.replace(/\s+/g, '_').replace(/\W/g, '');
 })
 
 module.exports = { Page, User, db };

@@ -28,16 +28,16 @@ module.exports = () => layout(html`
     </div>
 
     <div class="form-group">
-      <label for="paragraph" class="col-sm-2 control-label">Enter your text here: </label>
+      <label for="content" class="col-sm-2 control-label">Enter your text here: </label>
       <div class="col-sm-10">
-        <textarea id="paragraph" name="paragraph" class="form-control" rows="4"></textarea>
+        <textarea id="content" name="content" class="form-control" rows="4"></textarea>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="page-status" class="col-sm-2 control-label">Page Status</label>
+      <label for="status" class="col-sm-2 control-label">Page Status</label>
       <div class="col-sm-10">
-        <input id="page-status" name="page-status" type="text"/>
+        <input id="status" name="status" type="text"/>
       </div>
     </div>
 

@@ -11,14 +11,15 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const newPage = req.body;
-    await Page.create(newPage);
+    const { title, slug, content, status } = req.body;
+    await Page.create({ title, slug, content, status });
     res.redirect('/wiki')
   } catch (error) { throw new Error(error) }
-})
+});
+
 router.get('/add', (req, res, next) => {
   res.status(200).send(addPage());
-})
+});
 
 
 module.exports = router;
