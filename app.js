@@ -11,9 +11,8 @@ app.use(express.json());
 
 app.use('/wiki', require('./routes/wiki'));
 app.use('./users', require('./routes/users'));
-app.use('*', (req, res) => {
-  res.send('Please type /wiki to see wikipedia!')
-});
+
+app.get('/', (req, res) => { res.redirect('/wiki') });
 
 // Verify db connection
 db.authenticate().then(() => { console.log('connected to the database') });
