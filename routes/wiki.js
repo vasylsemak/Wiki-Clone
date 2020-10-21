@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const addPage = require('../views/addPage');
 const { Page } = require('../models');
+const wikiPage = require('../views/wikipage');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -11,9 +12,8 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const { title, slug, content, status } = req.body;
-    await Page.create({ title, slug, content, status });
-    res.redirect('/wiki')
+    const newPage = await Page.create(req.body);
+    res.redirect(`/wiki/${newPage.slug}`);
   } catch (error) { throw new Error(error) }
 });
 
@@ -30,7 +30,7 @@ router.get('/:slug', async (req, res, next) => {
   const currPage = await Page.findOne({
     where: { slug: currSlug }
   })
-  res.send(currSlug);
+  res.send(wikiPage(currPage));
   } catch (error) { throw new Error(error) }
 });
 
