@@ -42,12 +42,12 @@ router.get('/:slug', async (req, res, next) => {
       .replace(/\s+/g, '_')
       .replace(/\W/g, '')
       .toLowerCase();
+    const currPage = await Page.findOne({
+      where: {slug: currSlug}
+    });
+    const {name} = await currPage.getAuthor();  // Magic Method created through associations
 
-  const currPage = await Page.findOne({
-    where: {slug: currSlug}
-  })
-
-  res.send(wikiPage(currPage));
+    res.send(wikiPage(currPage, name));
   } catch (error) {throw new Error(error)}
 });
 
