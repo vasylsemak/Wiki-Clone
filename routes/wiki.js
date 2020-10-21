@@ -21,5 +21,18 @@ router.get('/add', (req, res, next) => {
   res.status(200).send(addPage());
 });
 
+router.get('/:slug', async (req, res, next) => {
+  try {
+    const currSlug = req.params.slug
+    .replace(/\s+/g, '_')
+    .replace(/\W/g, '')
+    .toLowerCase();
+  const currPage = await Page.findOne({
+    where: { slug: currSlug }
+  })
+  res.send(currSlug);
+  } catch (error) { throw new Error(error) }
+});
+
 
 module.exports = router;
