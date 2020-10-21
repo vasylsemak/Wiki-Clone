@@ -2,11 +2,14 @@ const router = require('express').Router();
 const addPage = require('../views/addPage');
 const { Page } = require('../models');
 const wikiPage = require('../views/wikipage');
+const allPages = require('../views/main');
 
 router.get('/', async (req, res, next) => {
   try {
     const data = await Page.findAll();
-    res.status(200).send(data);
+    console.log("data ----->", data);
+
+    res.send(allPages(data));
   } catch (error) { throw new Error(error) }
 });
 
