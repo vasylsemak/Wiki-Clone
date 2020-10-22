@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const {Page, User} = require('../models');
 const { main, addPage, editPage, wikiPage } = require("../views");
-const cleanSlag = require('../functions');
+const cleanSlug = require('../functions');
 
-// Get All pages
+
+// ALL Pages
+// GET All pages
 router.get('/', async (req, res, next) => {
   try {
     const data = await Page.findAll();
@@ -29,15 +31,17 @@ router.post('/', async (req, res) => {
   } catch (error) {throw new Error(error)}
 });
 
-// Get Add page
+// GET Add page
 router.get('/add', (req, res) => {
   res.status(200).send(addPage());
 });
 
-// Get One page
+
+// ONE Page by Slug
+// GET One page
 router.get('/:slug', async (req, res) => {
   try {
-    const currSlug = cleanSlag(req.params.slug);
+    const currSlug = cleanSlug(req.params.slug);
     const page = await Page.findOne({where: {slug: currSlug}});
 
     if(page === null) res.sendStatus(404);
@@ -48,19 +52,32 @@ router.get('/:slug', async (req, res) => {
   } catch (error) {throw new Error(error)}
 });
 
+// PUT Edit One page
+router.put('/:slug', async (req, res) => {
+  try {
+    const currSlug = cleanSlug(req.params.slug);
+    const [updatedRowCount, updatedPages] = await Page.update(req.body, {
+      where: {
+        slug: currSlug
+      },
+      returning: true
+    });
+    res.redirect('/wiki/' + updatedPages[0].slug);
+  } catch (error) {throw new Error(error)}
+})
+
 // GET Edit One page
-router.get('./:slug/edit', async (req, res) => {
+router.get('/:slug/edit', async (req, res) => {
   try {
     const currSlug = cleanSlug(req.params.slug);
     const page = await Page.findOne({where: {slug: currSlug}});
 
     if(page === null) res.sendStatus(404);
     else {
-      const {name} = await page.getAuthor();
-      res.send(editPage(page, name));
+      const {name, email} = await page.getAuthor();
+      res.send(editPage(page, {name, email}));
     }
   } catch (error) {throw new Error(error)}
 })
-
 
 module.exports = router;

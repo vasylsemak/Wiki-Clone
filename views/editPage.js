@@ -1,7 +1,7 @@
 const html = require("html-template-tag");
 const layout = require("./layout");
 
-module.exports = (page, author) => layout(html`
+module.exports = (page, {name, email}) => layout(html`
   <h3>Edit a Page</h3>
   <hr>
   <form method="POST" action="/wiki/${page.slug}?_method=PUT">
@@ -9,14 +9,14 @@ module.exports = (page, author) => layout(html`
   <div class="form-group">
     <label class="col-sm-2 control-label" for="author">Author Name</label>
     <div class="col-sm-10">
-      <input id="author" name="author" type="text" class="form-control"/>
+      <input id="author" name="author" type="text" class="form-control" value="${name}"/>
     </div>
   </div>
 
   <div class="form-group">
     <label for="email" class="col-sm-2 control-label">Author e-mail</label>
     <div class="col-sm-10">
-      <input id="email" name="email" type="email" class="form-control" placeholder="Enter email"/>
+      <input id="email" name="email" type="text" class="form-control" value="${email}"/>
     </div>
   </div>
 
@@ -28,9 +28,9 @@ module.exports = (page, author) => layout(html`
     </div>
 
     <div class="form-group">
-      <label for="email" class="col-sm-2 control-label">Author e-mail</label>
+      <label for="content" class="col-sm-2 control-label">Enter your text here: </label>
       <div class="col-sm-10">
-        <input id="email" name="email" type="email" class="form-control" placeholder="Enter email"/>
+        <textarea id="content" name="content" class="form-control" rows="8">${page.content}</textarea>
       </div>
     </div>
 
