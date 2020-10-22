@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://localhost:5432/wikistack', {
   logging: false   // prevents output of SQL commands to console
 });
+const cleanSlag = require('../functions');
 
 const Page = db.define('page', {
   title: {
@@ -28,12 +29,7 @@ const Page = db.define('page', {
 });
 
 Page.beforeValidate(page => {
-  if(!page.slug) {
-    page.slug = page.title
-      .replace(/\s+/g, '_')
-      .replace(/\W/g, '')
-      .toLowerCase();
-  }
+  if(!page.slug) page.slug = cleanSlag(page.title);
 });
 
 const User = db.define('user', {

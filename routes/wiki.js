@@ -1,19 +1,13 @@
 const router = require('express').Router();
-const addPage = require('../views/addPage');
 const {Page, User} = require('../models');
-const wikiPage = require('../views/wikipage');
-const allPages = require('../views/main');
-const edirPage = require('../views/editPage');
-
-
-// Service f-n to refactor slug url
-const cleanSlag = s => s.replace(/\s+/g, '_').replace(/\W/g, '').toLowerCase();
+const { main, addPage, editPage, wikiPage } = require("../views");
+const cleanSlag = require('../functions');
 
 // Get All pages
 router.get('/', async (req, res, next) => {
   try {
     const data = await Page.findAll();
-    res.send(allPages(data));
+    res.send(main(data));
   } catch (error) {throw new Error(error)}
 });
 
