@@ -4,11 +4,21 @@ const layout = require("./layout");
 module.exports = (page, author) => layout(html`
   <h3>Edit a Page</h3>
   <hr>
-  <form method="POST" action="/wiki/${page.slug}">
+  <form method="POST" action="/wiki/${page.slug}?_method=PUT">
 
-    <div>PLACEHOLDER FOR AUTHOR NAME FIELD</div>
-    
-    <div>PLACEHOLDER FOR AUTHOR EMAIL FIELD</div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="author">Author Name</label>
+    <div class="col-sm-10">
+      <input id="author" name="author" type="text" class="form-control"/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="email" class="col-sm-2 control-label">Author e-mail</label>
+    <div class="col-sm-10">
+      <input id="email" name="email" type="email" class="form-control" placeholder="Enter email"/>
+    </div>
+  </div>
 
     <div class="form-group">
       <label for="title" class="col-sm-2 control-label">Page Title</label>
@@ -17,7 +27,12 @@ module.exports = (page, author) => layout(html`
       </div>
     </div>
 
-    <div>PLACEHOLDER FOR PAGE CONTENT TEXTAREA FIELD</div>
+    <div class="form-group">
+      <label for="email" class="col-sm-2 control-label">Author e-mail</label>
+      <div class="col-sm-10">
+        <input id="email" name="email" type="email" class="form-control" placeholder="Enter email"/>
+      </div>
+    </div>
 
     <div class="form-group">
       <label for="content" class="col-sm-2 control-label">Status</label>
