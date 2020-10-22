@@ -66,6 +66,19 @@ router.put('/:slug', async (req, res) => {
   } catch (error) {throw new Error(error)}
 })
 
+// DELETE One page
+router.delete('/:slug', async (req, res) => {
+  try {
+    const currSlug = cleanSlug(req.params.slug);
+    await Page.destroy({
+      where: {
+        slug: currSlug
+      }
+    })
+    res.redirect('/wiki');
+  } catch (error) {throw new Error(error)}
+});
+
 // GET Edit One page
 router.get('/:slug/edit', async (req, res) => {
   try {
