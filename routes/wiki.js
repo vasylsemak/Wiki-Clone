@@ -70,12 +70,17 @@ router.put('/:slug', async (req, res) => {
 router.delete('/:slug', async (req, res) => {
   try {
     const currSlug = cleanSlug(req.params.slug);
-    await Page.destroy({
-      where: {
-        slug: currSlug
-      }
-    })
-    res.redirect('/wiki');
+    const page = await Page.findOne({where: {slug: currSlug}});
+
+    if(page === null) res.sendStatus(404);
+    else {
+      const {id} = await page.getAuthor();
+      await page.destroy();
+      const pageAuthor = await User.findOne({where: {id: id}});
+
+      if(pageAuthor !== null) await pageAuthor.destroy();
+      res.redirect('/wiki');
+    }
   } catch (error) {throw new Error(error)}
 });
 
