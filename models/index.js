@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://localhost:5432/wikistack', {
   logging: false   // prevents output of SQL commands to console
 });
+const cleanSlug = require('../functions');
 
 const Page = db.define('page', {
   title: {
@@ -25,7 +26,11 @@ const Page = db.define('page', {
       }
     }
   }
-})
+});
+
+Page.beforeValidate(page => {
+  if(!page.slug) page.slug = cleanSlug(page.title);
+});
 
 const User = db.define('user', {
   name: {
@@ -35,11 +40,11 @@ const User = db.define('user', {
   email: {
     type: Sequelize.STRING,
     allowNull: false,
-    validate: {
-      isEmail: true,
-      unique: true
-    }
+    isEmail: true,
   }
-})
+});
+
+
+Page.belongsTo(User, { as: 'author' });
 
 module.exports = { Page, User, db };

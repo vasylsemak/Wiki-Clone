@@ -5,7 +5,7 @@ module.exports = (content) => html`<!DOCTYPE html>
     <head>
       <title>WikiStack</title>
       <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-      <link href="/stylesheets/style.css" rel="stylesheet">
+      <link href="/style.css" rel="stylesheet">
     </head>
     <body>
       <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
@@ -21,9 +21,9 @@ module.exports = (content) => html`<!DOCTYPE html>
           </div>
           <div id="nav-items" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-              <li><a href="/wiki/">index</a></li>
-              <li><a href="/wiki/add">write</a></li>
+              <li><a href="/wiki/">pages</a></li>
               <li><a href="/users">users</a></li>
+              <li><a href="/wiki/add">WRITE</a></li>
             </ul>
           </div>
         </div>
@@ -33,7 +33,7 @@ module.exports = (content) => html`<!DOCTYPE html>
       </div>
       <hr/>
       <div id="footer" class="container text-muted">
-        WIKISTACK by Fullstack Academy
+        WIKISTACK by Vasyl Semak
       </div>
     </body>
   </html>`;
