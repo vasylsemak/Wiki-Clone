@@ -21,7 +21,7 @@ const Page = db.define('page', {
     type: Sequelize.STRING,
     validate: {
       isIn: {
-        args: [['open', 'closed']],
+        args: [[ 'open', 'closed' ]],
         msg: 'Must be open or closed!'
       }
     }

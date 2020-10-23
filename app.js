@@ -1,9 +1,11 @@
+const methodOverride = require('method-override');
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
-const methodOverride = require('method-override');
 const app = express();
-const {db} = require('./models');
+
+const { db } = require('./models');
+const notFoundPage = require('./views/notFoundPage');
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -14,7 +16,9 @@ app.use(methodOverride('_method'));
 app.use('/wiki', require('./routes/wiki'));
 app.use('/users', require('./routes/users'));
 
-app.get('/', (req, res) => {res.redirect('/wiki')});
+app.use((req, res, next) => {
+  res.status(404).send(notFoundPage());
+});
 
 // Verify db connection
 db.authenticate().then(() => {console.log('connected to the database')});
