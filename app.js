@@ -21,6 +21,8 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  console.log(err.stack);
+  res.status(500).sendFile(path.join(__dirname, '/public/img/error500.png'));
 })
 
 // Verify db connection
