@@ -14,11 +14,16 @@ router.get('/', async (req, res, next) => {
 // Get One user
 router.get('/:id', async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id);
-    const pages = await Page.findAll({
-      where: { authorId: user.id }
+    // const user = await User.findByPk(req.params.id);
+    // const pages = await Page.findAll({      ---> MAGIC METHOD
+    //   where: { authorId: user.id }
+    // });
+
+    const { name, pages } = await User.findByPk(req.params.id, {
+      include: [{ model: Page }]         //    ---> EAGER LOADING
     });
-    res.send(userPages(user, pages));
+
+    res.send(userPages(name, pages));
   } catch (error) { next(error) }
 })
 
