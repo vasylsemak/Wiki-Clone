@@ -13,6 +13,7 @@ router.get('/', async (req, res, next) => {
   } catch (error) { next(error) }
 });
 
+
 // Post to All pages
 router.post('/', async (req, res, next) => {
   try {
@@ -24,12 +25,12 @@ router.post('/', async (req, res, next) => {
       }
     });
     const newPage = await Page.create({ title, content, status });
-    await newPage.setAuthor(user); // Association between User and Page.
 
-    console.log('magic methods-->', Object.keys(Page.prototype));
+    await newPage.setAuthor(user); // Association between User and Page.
     res.redirect(`/wiki/${newPage.slug}`);
   } catch (error) { next(error) }
 });
+
 
 // GET Add page
 router.get('/add', (req, res) => {
@@ -42,29 +43,28 @@ router.get('/add', (req, res) => {
 router.get('/:slug', async (req, res, next) => {
   try {
     const currSlug = cleanSlug(req.params.slug);
-    const page = await Page.findOne({ where: { slug: currSlug } });
+    const page = await Page.findOne({
+      where: { slug: currSlug },
+      include: [{ model: User, as: 'author' }]
+    });
 
-    if(page === null) res.sendStatus(404);
-    else {
-      const { name } = await page.getAuthor();  // Magic Method created through association
-      res.send(wikiPage(page, name));
-    }
+    res.send(wikiPage(page, page.author.name));
   } catch (error) { next(error) }
 });
+
 
 // PUT Edit One page
 router.put('/:slug', async (req, res, next) => {
   try {
     const currSlug = cleanSlug(req.params.slug);
     const [ updatedRowCount, updatedPages ] = await Page.update(req.body, {
-      where: {
-        slug: currSlug
-      },
+      where: { slug: currSlug },
       returning: true
     });
     res.redirect('/wiki/' + updatedPages[0].slug);
   } catch (error) { next(error) }
 })
+
 
 // DELETE One page
 router.delete('/:slug', async (req, res, next) => {
@@ -72,31 +72,25 @@ router.delete('/:slug', async (req, res, next) => {
     const currSlug = cleanSlug(req.params.slug);
     const page = await Page.findOne({ where: { slug: currSlug } });
 
-    if(page === null) res.sendStatus(404);
-    else {
-      const {id} = await page.getAuthor();
-      await page.destroy();
-      const pageAuthor = await User.findOne({ where: { id: id } });
+    const {id} = await page.getAuthor();
+    await page.destroy();
+    const pageAuthor = await User.findOne({ where: { id: id } });
 
-      if(pageAuthor !== null) await pageAuthor.destroy();
-      res.redirect('/wiki');
-    }
+    if(pageAuthor !== null) await pageAuthor.destroy();
+    res.redirect('/wiki');
   } catch (error) { next(error) }
 });
+
 
 // GET Edit One page
 router.get('/:slug/edit', async (req, res, next) => {
   try {
     const page = await Page.findOne({
       where: { slug: req.params.slug },
-      include: [{
-        model: User,
-        as: 'author'
-      }]
+      include: [{ model: User, as: 'author' }]
     });
 
-    if(page === null || !page.author) res.sendStatus(404);
-    else res.send(editPage(page, page.author));
+    res.send(editPage(page, page.author));
   } catch (error) { next(error) }
 })
 

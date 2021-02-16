@@ -16,7 +16,7 @@ app.use(methodOverride('_method'));
 app.use('/wiki', require('./routes/wiki'));
 app.use('/users', require('./routes/users'));
 
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).send(notFoundPage());
 });
 
