@@ -87,14 +87,16 @@ router.delete('/:slug', async (req, res, next) => {
 // GET Edit One page
 router.get('/:slug/edit', async (req, res, next) => {
   try {
-    const currSlug = cleanSlug(req.params.slug);
-    const page = await Page.findOne({ where: { slug: currSlug } });
+    const page = await Page.findOne({
+      where: { slug: req.params.slug },
+      include: [{
+        model: User,
+        as: 'author'
+      }]
+    });
 
-    if(page === null) res.sendStatus(404);
-    else {
-      const { name, email } = await page.getAuthor();
-      res.send(editPage(page, { name, email }));
-    }
+    if(page === null || !page.author) res.sendStatus(404);
+    else res.send(editPage(page, page.author));
   } catch (error) { next(error) }
 })
 
